@@ -148,6 +148,130 @@
   color: #0066cc;
 }
 
+/* Add this section RIGHT AFTER the .no-patterns-message rule and BEFORE the final comment */
+
+/* Stats Section */
+.stats-section {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.quick-stats {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-number {
+  font-family: "Lexend", sans-serif;
+  font-size: 2rem;
+  font-weight: 500;
+  color: #7b68ee;
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: "Figtree", sans-serif;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+/* Learn More Section */
+.learn-more-section {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.learn-more-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.75rem;
+  border: none;
+  background: none;
+  font-family: "Figtree", sans-serif;
+  font-size: 1rem;
+  color: #333;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.learn-more-toggle:hover {
+  background-color: #f1f3f4;
+}
+
+.toggle-arrow {
+  margin-right: 0.5rem;
+  font-size: 0.8rem;
+  color: #7b68ee;
+  transition: transform 0.2s ease;
+  font-family: monospace;
+}
+
+.toggle-text {
+  font-weight: 500;
+  color: #333;
+}
+
+.learn-more-content {
+  padding: 1.5rem 2rem;
+  background-color: rgba(123, 104, 238, 0.02);
+  border: 1px solid rgba(123, 104, 238, 0.1);
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+.education-section {
+  margin-bottom: 1.5rem;
+}
+
+.education-section:last-child {
+  margin-bottom: 0;
+}
+
+.education-section h4 {
+  font-family: "Lexend", sans-serif;
+  font-weight: 400;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.education-section p {
+  font-family: "Figtree", sans-serif;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 0.75rem;
+}
+
+.education-section ul {
+  padding-left: 1.5rem;
+  font-family: "Figtree", sans-serif;
+}
+
+.education-section li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  color: #555;
+}
+
 /* For any body text elements */
 .pattern-description-full,
 .pattern-description,

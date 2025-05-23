@@ -1,4 +1,4 @@
-// Pattern libraries
+// Pattern libraries for communication analysis
 const patterns = {
   apologetic: [
     { regex: /sorry to bother you/gi, type: "apology" },
@@ -38,6 +38,42 @@ const patterns = {
   ],
 };
 
+// Pattern definitions with educational content
+export const patternDefinitions = {
+  apology: {
+    name: "Apologetic Language",
+    description: "Unnecessary apologies that may undermine confidence",
+    impact:
+      "Can signal lack of confidence and make requests seem like a burden",
+    color: "#ff6b6b",
+  },
+  doubt: {
+    name: "Self-Doubt Expressions",
+    description: "Language that undermines your own expertise or opinions",
+    impact: "Reduces perceived competence and authority",
+    color: "#feca57",
+  },
+  permission: {
+    name: "Permission-Seeking Language",
+    description:
+      "Asking for permission when you have the right to make requests",
+    impact: "Can make legitimate requests seem optional or burdensome",
+    color: "#48dbfb",
+  },
+  minimizer: {
+    name: "Minimizing Words",
+    description: "Words that downplay the importance of your message",
+    impact: "Makes important points seem less significant",
+    color: "#ff9ff3",
+  },
+  validation: {
+    name: "Validation-Seeking Phrases",
+    description: "Phrases that seek approval or confirmation unnecessarily",
+    impact: "Can signal uncertainty about your own ideas",
+    color: "#54a0ff",
+  },
+};
+
 // Identify patterns in text
 export function identifyPatterns(text) {
   const foundPatterns = [];
@@ -62,15 +98,16 @@ export function identifyPatterns(text) {
           length: match[0].length,
           type: pattern.type,
           category,
+          definition: patternDefinitions[pattern.type],
         });
       }
     });
   });
 
   // Sort patterns by index to handle overlapping patterns
-  foundPatterns.sort((a, b) => a.index - b.index);
+  foundPatterns.sort((a, b) => a.start - b.start);
 
-  // Remove overlapping patterns
+  // Remove overlapping patterns (keep the longer one)
   for (let i = 0; i < foundPatterns.length - 1; i++) {
     const current = foundPatterns[i];
     const next = foundPatterns[i + 1];
@@ -91,117 +128,118 @@ export function identifyPatterns(text) {
   return foundPatterns;
 }
 
-// Simple transformation rules
-const transformationRules = {
-  direct: [
-    // Better handling of doubt phrases at beginning of sentences
-    {
-      from: /i('m| am) not sure if (this is|that is|these are|those are)/gi,
-      to: function (match, g1, g2) {
-        // Capitalize the first letter of g2
-        return g2.charAt(0).toUpperCase() + g2.slice(1);
-      },
-    },
-    { from: /i('m| am) not sure/gi, to: "I am confident" },
-    { from: /i might be wrong,? but/gi, to: "" },
-    { from: /sorry to bother you,?\s*/gi, to: "" },
-    { from: /i was wondering if\s*/gi, to: "I need " },
-    { from: /would it be possible to\s*/gi, to: "Please " },
-    { from: /\bjust\b\s*/gi, to: "" },
-    { from: /\ba little\b\s*/gi, to: "" },
-    { from: /\bkind of\b\s*/gi, to: "" },
-    { from: /\bsort of\b\s*/gi, to: "" },
-    { from: /\bmaybe\b\s*/gi, to: "" },
-    { from: /\bpossibly\b\s*/gi, to: "" },
-    { from: /if you don't mind\s*/gi, to: "" },
-    { from: /when you have a chance\s*/gi, to: "by Friday " },
-    { from: /i hope this isn't an inconvenience,?\s*/gi, to: "" },
-    { from: /does that make sense\?/gi, to: "" },
-    {
-      from: /sorry for all the questions/gi,
-      to: "These questions will help clarify the requirements",
-    },
-    {
-      from: /sorry for the delay\s*/gi,
-      to: "The timeline has been extended. ",
-    },
-  ],
-  neutral: [
-    // Better handling of doubt phrases
-    {
-      from: /i('m| am) not sure if (this is|that is|these are|those are)/gi,
-      to: function (match, g1, g2) {
-        return "I believe " + g2;
-      },
-    },
-    { from: /i('m| am) not sure/gi, to: "I believe" },
-    { from: /i might be wrong,? but/gi, to: "I think " },
-    { from: /sorry to bother you,?\s*/gi, to: "" },
-    { from: /i was wondering if\s*/gi, to: "Could you " },
-    { from: /would it be possible to\s*/gi, to: "Please " },
-    { from: /\bjust\b\s*/gi, to: "" },
-    {
-      from: /sorry for all the questions/gi,
-      to: "Thank you for addressing these questions.",
-    },
-    {
-      from: /does that make sense\?/gi,
-      to: "Please let me know if you have any questions.",
-    },
-    { from: /no pressure/gi, to: "I appreciate your consideration" },
-  ],
-  softened: [
-    // Mostly keep as is, but could add some additional softeners
-    { from: /send me this/gi, to: "send this to me when you have a chance" },
-    { from: /I need/gi, to: "I would appreciate" },
-    { from: /must be done/gi, to: "would ideally be completed" },
-  ],
-};
+// Generate insights based on found patterns
+function generateInsights(foundPatterns, patternCounts, wordCount) {
+  const insights = [];
 
-// Main analysis function
-export function analyzeText(text, tone) {
-  // Store the original text
+  const totalPatterns = foundPatterns.length;
+
+  // Most common pattern insight
+  if (totalPatterns > 0) {
+    const mostCommonType = Object.keys(patternCounts).reduce((a, b) =>
+      patternCounts[a] > patternCounts[b] ? a : b
+    );
+
+    insights.push({
+      type: "most_common",
+      title: "Most Common Pattern",
+      message: `Your most frequent pattern is ${patternDefinitions[
+        mostCommonType
+      ].name.toLowerCase()}. ${patternDefinitions[mostCommonType].impact}.`,
+      count: patternCounts[mostCommonType],
+    });
+  }
+
+  // Simple insights based on pattern count
+  if (totalPatterns > 3) {
+    insights.push({
+      type: "multiple_patterns",
+      title: "Multiple Softening Patterns",
+      message:
+        "Your message uses several different types of softening language. Consider if this matches your intended tone.",
+      severity: "medium",
+    });
+  } else if (totalPatterns === 0) {
+    insights.push({
+      type: "direct_style",
+      title: "Direct Communication Style",
+      message:
+        "Your text uses direct, clear communication without common softening patterns.",
+      severity: "info",
+    });
+  }
+
+  return insights;
+}
+
+// Determine overall communication style
+function determineOverallStyle(totalPatterns, wordCount) {
+  if (totalPatterns === 0) {
+    return {
+      style: "Direct",
+      description:
+        "Your communication is clear and straightforward with no detected softening language.",
+      confidence: "high",
+    };
+  } else if (totalPatterns <= 2) {
+    return {
+      style: "Balanced",
+      description:
+        "Your communication balances directness with some diplomatic language.",
+      confidence: "medium",
+    };
+  } else {
+    return {
+      style: "Gentle",
+      description:
+        "Your communication emphasizes politeness and softer language patterns.",
+      confidence: "low",
+    };
+  }
+}
+
+// Main analysis function - simplified to focus on analysis only
+export function analyzeText(text) {
+  if (!text || text.trim().length === 0) {
+    return null;
+  }
+
   const originalText = text;
-
-  // Identify all patterns in the original text
   const foundPatterns = identifyPatterns(originalText);
+  const wordCount = originalText
+    .split(/\s+/)
+    .filter((word) => word.length > 0).length;
 
-  // Apply transformations based on selected tone
-  let transformed = originalText;
+  // Count patterns by type and category
+  const patternCounts = {};
+  const categoryCounts = {};
 
-  // Apply simple transformation rules
-  transformationRules[tone]?.forEach((rule) => {
-    if (typeof rule.to === "function") {
-      // Handle function-based replacements
-      transformed = transformed.replace(rule.from, rule.to);
-    } else {
-      // Handle string-based replacements
-      transformed = transformed.replace(rule.from, rule.to);
-    }
+  foundPatterns.forEach((pattern) => {
+    patternCounts[pattern.type] = (patternCounts[pattern.type] || 0) + 1;
+    categoryCounts[pattern.category] =
+      (categoryCounts[pattern.category] || 0) + 1;
   });
 
-  // Make sure the first letter is capitalized after transformations
-  transformed = transformed.replace(/^[a-z]/, (match) => match.toUpperCase());
-
-  // Fix any double spaces
-  transformed = transformed.replace(/\s{2,}/g, " ");
-
-  // Fix any sentences that might now start with lowercase letters
-  transformed = transformed.replace(/\.\s+[a-z]/g, (match) =>
-    match.replace(/[a-z]/, (letter) => letter.toUpperCase())
-  );
+  const insights = generateInsights(foundPatterns, patternCounts, wordCount);
+  const overallStyle = determineOverallStyle(foundPatterns.length, wordCount);
 
   return {
     original: originalText,
-    transformed,
     patterns: foundPatterns,
+    patternCounts,
+    categoryCounts,
+    totalPatterns: foundPatterns.length,
+    wordCount,
+    insights,
+    overallStyle,
   };
 }
 
-// Export the full module
+// Export the main functions
 const textAnalysis = {
   analyzeText,
   identifyPatterns,
+  patternDefinitions,
 };
 
 export default textAnalysis;

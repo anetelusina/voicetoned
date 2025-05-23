@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import "./App.css";
-import ToneSelector from "./components/ToneSelector";
 import ResultDisplay from "./components/ResultDisplay";
 import { analyzeText } from "./utils/textAnalysis";
 
 function App() {
   const [inputText, setInputText] = useState("");
-  const [selectedTone, setSelectedTone] = useState("neutral");
   const [result, setResult] = useState(null);
 
   const handleAnalyze = () => {
     if (!inputText.trim()) return;
 
-    const analysis = analyzeText(inputText, selectedTone);
+    const analysis = analyzeText(inputText);
     setResult(analysis);
   };
 
@@ -20,8 +18,8 @@ function App() {
     <div className="app-container">
       <h1 className="app-title">VoiceToned</h1>
       <p className="app-description">
-        Adjust your tone from softened to direct. See how your communication
-        patterns change.
+        Discover patterns in your communication style and understand their
+        impact.
       </p>
 
       <div className="input-section">
@@ -34,10 +32,8 @@ function App() {
         />
       </div>
 
-      <ToneSelector selectedTone={selectedTone} onChange={setSelectedTone} />
-
       <button className="analyze-button" onClick={handleAnalyze}>
-        Analyze & Transform
+        Analyze
       </button>
 
       {result && <ResultDisplay result={result} />}
