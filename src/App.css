@@ -1,0 +1,63 @@
+.app-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.app-title {
+  font-family: "Lexend", sans-serif;
+  font-size: 40px;
+  font-weight: 600; /* Changed to 400 */
+  color: #7b68ee;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.app-description {
+  font-family: "Figtree", sans-serif;
+  margin-bottom: 32px;
+  color: #555;
+  font-size: 17px;
+}
+
+.input-section {
+  margin-bottom: 24px;
+}
+
+.input-label {
+  font-family: "Lexend", sans-serif;
+  display: block;
+  font-weight: 400; /* Changed to 400 */
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.text-input {
+  width: 100%;
+  min-height: 150px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 16px;
+  resize: vertical;
+}
+
+.analyze-button {
+  font-family: "Lexend", sans-serif;
+  font-weight: 400; /* Changed to 400 */
+  letter-spacing: 0.01em;
+  background-color: #7b68ee;
+  color: white;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+  margin-bottom: 32px;
+}
+
+.analyze-button:hover {
+  background-color: #6a5acd;
+}

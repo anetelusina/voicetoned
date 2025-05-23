@@ -1,0 +1,44 @@
+.highlighted-text {
+  font-family: "Figtree", sans-serif;
+  padding: 12px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  line-height: 1.6;
+}
+
+.highlight-apology {
+  background-color: #ffcccb;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+.highlight-doubt {
+  background-color: #ffe0b2;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+.highlight-permission {
+  background-color: #bbdefb;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+.highlight-minimizer {
+  background-color: #fff9c4;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+.highlight-validation {
+  background-color: #e1bee7;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+.highlight-default {
+  background-color: #e0e0e0;
+  padding: 0 4px;
+  border-radius: 4px;
+}
